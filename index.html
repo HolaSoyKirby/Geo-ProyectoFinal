@@ -85,9 +85,23 @@
                 .catch(function (error) {
                     console.log('Hubo un problema con la petición Fetch:' + error.message);
                 });*/
-
-            const res = await fetch("https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.855686&lomax=-85.139838");
-                console.log(res);
+                const uri = "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.779194";
+            const res = await fetch(uri);
+            const data = await res.json();
+            console.log(data.states);
+            const avionazos = data.states;
+            avionazos.forEach((element, index) => {
+                let marker = new google.maps
+                                                .Marker({
+                                                    map: map,
+                                                    position: new google
+                                                        .maps.LatLng(
+                                                            element[6],
+                                                            element[5]
+                                                        ),
+                                                    title: `${index} ${element[2]}`
+                                                });
+            });
         }
     </script>
 
