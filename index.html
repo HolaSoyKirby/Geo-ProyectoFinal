@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Fetch 4</title>
+    <title>Proyecto Final</title>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -23,85 +23,130 @@
 <body>
     <div id="map"></div>
     <script>
+        var aviones = [];
         var coordenadas = {
-            lat: 0,
-            lng: 0
+            lat: 23.289674,
+            lng: -101.793495
         }
 
         var propiedades = {
             center: coordenadas,
-            zoom: 2
+            zoom: 5
         }
 
-
-
         async function iniciaMapa() {
-            /*
-            fetch('./paises.json').then(function (response) {
-                    response.json().then(function (datos) {*/
-                        const map = new google.maps.Map(document.getElementById('map'), propiedades);
-                        /*console.log(datos);
-                        datos.forEach(marcador => {
-                            fetch('https://corona.lmao.ninja/v3/covid-19/countries').then(function (
-                                respuesta) {
-                                respuesta.json().then(function (datospaises) {
-                                    datospaises.forEach(registro => {
-                                        if (registro.country == marcador
-                                            .CountryName) {
-                                            var informacion =
-                                                `<strong>País:</strong> ${registro.country}<br><strong>Casos:</strong> ${registro.cases}<br><strong>Nuevos hoy:</strong> ${registro.todayCases}<br><strong>Muertes:</strong> ${registro.deaths}<br><strong>Muertes Hoy:</strong> ${registro.todayDeaths}<br><strong>Recuperados:</strong> ${registro.recovered}<br><strong>Activos:</strong> ${registro.active}<br><strong>Críticos:</strong> ${registro.critical}<br><strong>Casos por millón:</strong> ${registro.casesPerOneMillion}`;
-
-                                            var infowindow = new google.maps
-                                                .InfoWindow({
-                                                    content: informacion
-                                                });
-
-                                            let marker = new google.maps
-                                                .Marker({
-                                                    map: map,
-                                                    position: new google
-                                                        .maps.LatLng(
-                                                            marcador
-                                                            .CapitalLatitude,
-                                                            marcador
-                                                            .CapitalLongitude
-                                                        ),
-                                                    title: `${marcador.CountryName} ${registro.cases}`
-                                                });
-
-                                            marker.addListener('click',
-                                                function () {
-                                                    infowindow.open(map,
-                                                        marker);
-                                                }
-                                            );
-                                        }
-                                    });
-                                });
-                            });
-                        });
-                    });
-                })
-                .catch(function (error) {
-                    console.log('Hubo un problema con la petición Fetch:' + error.message);
-                });*/
-                const uri = "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.779194";
+            const map = new google.maps.Map(document.getElementById('map'), propiedades);
+            
+            const uri =
+                "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.76";
             const res = await fetch(uri);
             const data = await res.json();
-            console.log(data.states);
+
             const avionazos = data.states;
-            avionazos.forEach((element, index) => {
-                let marker = new google.maps
-                                                .Marker({
-                                                    map: map,
-                                                    position: new google
-                                                        .maps.LatLng(
-                                                            element[6],
-                                                            element[5]
-                                                        ),
-                                                    title: `${index} ${element[2]}`
-                                                });
+            for (let element of avionazos) {
+
+                let m1, m2;
+
+                if (element[5] <= -114.719231) {
+                    aviones.push(element);
+                } else if (element[5] > -114.719231 && element[5] <= -111.077301) {
+                    let lat1 = 32.720980,
+                        lat2 = 31.337595,
+                        lon1 = -114.719231,
+                        lon2 = -111.077301;
+                    m1 = (lat2 - lat1) / (lon2 - lon1);
+                    m2 = (lat2 - element[6]) / (lon2 - element[5]);
+
+                    if (m2 >= m1) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -111.077301 && element[5] <= -108.216421) {
+                    let lat = 31.337595
+
+                    if (element[6] <= lat) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -108.216421 && element[5] <= -106.186345) {
+                    let lat = 31.816997;
+
+                    if (element[6] <= lat) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -106.186345 && element[5] <= -103.653327) {
+                    let lat1 = 31.816997,
+                        lat2 = 29.884509,
+                        lon1 = -106.186345,
+                        lon2 = -103.653327;
+                    m1 = (lat2 - lat1) / (lon2 - lon1);
+                    m2 = (lat2 - element[6]) / (lon2 - element[5]);
+
+                    if (m2 >= m1) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -103.653327 && element[5] <= -101.079160) {
+                    let lat = 29.884509;
+
+                    if (element[6] <= lat) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -101.079160 && element[5] <= -97.785928) {
+                    let lat1 = 29.884509,
+                        lat2 = 26.513094,
+                        lon1 = -101.079160,
+                        lon2 = -97.785928;
+                    m1 = (lat2 - lat1) / (lon2 - lon1);
+                    m2 = (lat2 - element[6]) / (lon2 - element[5]);
+
+                    if (m2 >= m1) {
+                        aviones.push(element);
+                    }
+                } else if (element[5] > -97.785928 && element[5] <= -95.065192) {
+                    let lat1 = 26.513094,
+                        lat2 = 29.659108,
+                        lon1 = -97.785928,
+                        lon2 = -95.065192;
+                    m1 = (lat2 - lat1) / (lon2 - lon1);
+                    m2 = (lat2 - element[6]) / (lon2 - element[5]);
+
+                    if (m2 >= m1) {
+                        aviones.push(element);
+                    }
+                } else {
+                    let lat = 29.463625;
+
+                    if (element[6] <= lat) {
+                        aviones.push(element);
+                    }
+                }
+            }
+
+            aviones.forEach((element, index) => {
+                let latLng = new google.maps.LatLng(element[6], element[5]); //Makes a latlng
+                
+                let marker = new google.maps.Marker({
+                    map: map,
+                    position: latLng,
+                    title: `${index} ${element[2]}`,
+                    icon: {
+                        url: `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${randomColor()}`
+                    }
+                });
+
+                marker.addListener('click', () => {
+                    map.panTo(latLng); //Make map global
+                    map.setZoom(8);
+                    }
+                );
             });
+        }
+
+        function randomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
     </script>
 
