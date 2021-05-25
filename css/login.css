@@ -1,77 +1,91 @@
 body,
 html {
     height: 100%;
-    background-color: rgb(8, 8, 8);
+    background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 13%, rgba(0, 212, 255, 1) 100%);
 }
 
-/* Position text in the middle of the page/image */
 .bg-text {
-    background-color: black;
-    /* Black w/opacity/see-through */
-    color: white;
+    background-color: rgb(223, 223, 223);
     font-weight: bold;
-    border: 2px solid orangered;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
     width: 80%;
-    padding: 30px;
+    padding: 20px;
     text-align: center;
-    border-radius: 20px;
-}
-
-hr {
-    border: solid white 1px;
-    color: white;
+    box-shadow: 5px 5px 10px 5px rgb(8, 8, 77);
 }
 
 .inputsDiv {
     margin-top: 20px;
     margin-bottom: 20px;
+    align-content: center;
+    margin-left: 1px;
 }
 
 input {
-    color: white;
-    background-color: black;
+    background-color: rgb(173, 173, 173);
     width: 95%;
     height: 40px;
     margin-bottom: 10px;
-    border-radius: 10px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-left: 10px;
     padding-left: 10px;
-    border: solid 1px;
+    border: solid 2px gray;
     transition: 0.5s;
+    caret-color: rgb(0, 0, 168);
 }
 
 input:hover {
-    border-color: rgb(255, 255, 0);
+    background-color: rgb(187, 187, 187);
+    border-color: rgb(0, 102, 255);
 }
 
 input:focus {
-    border-color: red;
+    background-color: rgb(187, 187, 187);
+    border-color: rgb(0, 0, 168);
     outline: none;
+}
+
+p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-top: 10px;
+    text-align: left;
+    margin-left: 15px;
 }
 
 button {
     height: 50px;
     width: 250px;
-    color: rgb(255, 255, 255);
-    background-color: rgb(240, 64, 0);
+    color: rgb(223, 223, 223);
+    background-color: rgb(0, 102, 255);
     font-size: 20px;
-    border: solid 2px;
-    border-radius: 25px;
-    border-color: orangered;
+    font-family: sans-serif;
+    border: 2px solid rgb(0, 102, 255);
+    border-radius: 5px;
     transition: 0.5s;
 }
 
 button:hover {
-    background-color: black;
+    background-color: rgb(9, 9, 121);
+    border-color: rgb(0, 0, 168);
     color: white;
 }
 
-button:focus {
-    border-color: rgb(255, 60, 0);
-    color: white;
+.clickableText {
+    font-family: Verdana;
+    font-size: 14px;
+    cursor: pointer;
+    color: rgb(0, 102, 255);
+    transition: 0.5s;
+}
+
+.clickableText:hover {
+    color: rgb(9, 9, 121);
+}
+
+.bottomTextDiv {
+    margin-bottom: 10px;
 }
