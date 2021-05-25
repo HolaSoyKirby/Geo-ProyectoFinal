@@ -1,5 +1,77 @@
-body {
-    background-image: url("../img/torre.jpg");
+body,
+html {
+    height: 100%;
+    background-color: rgb(8, 8, 8);
+}
+
+/* Position text in the middle of the page/image */
+.bg-text {
     background-color: black;
+    /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 2px solid orangered;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+hr {
+    border: solid white 1px;
+    color: white;
+}
+
+.inputsDiv {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+input {
+    color: white;
+    background-color: black;
+    width: 95%;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-left: 10px;
+    border: solid 1px;
+    transition: 0.5s;
+}
+
+input:hover {
+    border-color: rgb(255, 255, 0);
+}
+
+input:focus {
+    border-color: red;
+    outline: none;
+}
+
+button {
+    height: 50px;
+    width: 250px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(240, 64, 0);
+    font-size: 20px;
+    border: solid 2px;
+    border-radius: 25px;
+    border-color: orangered;
+    transition: 0.5s;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+button:focus {
+    border-color: rgb(255, 60, 0);
     color: white;
 }
