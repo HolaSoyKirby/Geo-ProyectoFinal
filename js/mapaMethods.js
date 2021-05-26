@@ -1,3 +1,5 @@
+let map;
+
 let aviones = [];
 let coordenadas = {
     lat: 23.289674,
@@ -18,11 +20,16 @@ let propiedades = {
         latLngBounds: limites,
         strictBounds: false,
     },
-}
+};
+
+let selectedAvion = {
+    color: 'rgba(0,0,0,0)',
+    nombre: ''
+};
 
 iniciaMapa = async () => {
 
-    const map = new google.maps.Map(document.getElementById('map'), propiedades);
+    map = new google.maps.Map(document.getElementById('map'), propiedades);
     map.setOptions({
         minZoom: 5
     });
@@ -38,26 +45,9 @@ iniciaMapa = async () => {
     const data = await res.json();
 
     aviones = filtrarAviones(data.states);
-
+    console.log(aviones);
     hideLoading();
-
-    aviones.forEach((element, index) => {
-        let latLng = new google.maps.LatLng(element[6], element[5]); //Makes a latlng
-
-        let marker = new google.maps.Marker({
-            map: map,
-            position: latLng,
-            title: `${index} ${element[2]}`,
-            icon: {
-                url: `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${randomColor()}`
-            }
-        });
-
-        marker.addListener('click', () => {
-            map.panTo(latLng); //Make map global
-            map.setZoom(8);
-        });
-    });
+    addMarkers();
 }
 
 function filtrarAviones(avionesFetch) {
@@ -141,13 +131,60 @@ function filtrarAviones(avionesFetch) {
     return aviones;
 }
 
-function randomColor() {
+addMarkers = () => {
+    aviones.forEach((element, index) => {
+        let latLng = new google.maps.LatLng(element[6], element[5]); //Makes a latlng
+        let color = randomColor();
+
+        let marker = new google.maps.Marker({
+            map: map,
+            position: latLng,
+            title: `${index + 1} ${element[2]}`,
+            icon: {
+                url: `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${color}`
+            }
+        });
+
+        marker.addListener('click', () => {
+            map.panTo(latLng); //Make map global
+            map.setZoom(8);
+            selectedAvion.color = `#${color}`;
+            selectedAvion.nombre = `${index + 1} ${element[2]}`
+        });
+
+        marker.addListener('mouseover', () => {
+            drawTitle(`#${color}`, `${index + 1} ${element[2]}`, latLng);
+        });
+
+        marker.addListener('mouseout', () => {
+            drawTitle(selectedAvion.color, selectedAvion.nombre, latLng);
+        });
+    });
+}
+
+randomColor = () => {
     let letters = '0123456789ABCDEF';
     let color = '';
     for (var i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+drawTitle = (color, nombre, coordenadas) => {
+    let divCuadrado = document.getElementById('divCuadrado');
+    let txtTitulo = document.getElementById('txtTitulo');
+
+    divCuadrado.style.backgroundColor = color;
+    txtTitulo.innerHTML = nombre;
+
+    if (nombre != '') {
+        divCuadrado.style.cursor = 'pointer';
+        divCuadrado.addEventListener('click', () => {
+            map.panTo(coordenadas); //Make map global
+            map.setZoom(8);
+        });
+    }
 }
 
 centerControl = (controlDiv, map) => {
@@ -161,7 +198,7 @@ centerControl = (controlDiv, map) => {
     controlUI.style.marginTop = "8px";
     controlUI.style.marginBottom = "22px";
     controlUI.style.textAlign = "center";
-    controlUI.title = "Click to recenter the map";
+    controlUI.title = "Click para reestablecer el mapa";
     controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
@@ -172,7 +209,7 @@ centerControl = (controlDiv, map) => {
     controlText.style.lineHeight = "38px";
     controlText.style.paddingLeft = "5px";
     controlText.style.paddingRight = "5px";
-    controlText.innerHTML = "Center Map";
+    controlText.innerHTML = "Centrar Mapa";
     controlUI.appendChild(controlText);
 
     // Setup the click event listeners: simply set the map to Chicago.
