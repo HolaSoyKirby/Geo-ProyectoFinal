@@ -24,7 +24,8 @@ let propiedades = {
 
 let selectedAvion = {
     color: 'rgba(0,0,0,0)',
-    nombre: ''
+    nombre: '',
+    coordenadas: null
 };
 
 iniciaMapa = async () => {
@@ -146,18 +147,15 @@ addMarkers = () => {
         });
 
         marker.addListener('click', () => {
-            map.panTo(latLng); //Make map global
-            map.setZoom(8);
-            selectedAvion.color = `#${color}`;
-            selectedAvion.nombre = `${index + 1} ${element[2]}`
+            drawDetalles(element, index, `#${color}`, latLng);
         });
 
         marker.addListener('mouseover', () => {
-            drawTitle(`#${color}`, `${index + 1} ${element[2]}`, latLng);
+            drawTitle(`#${color}`, `${index + 1} ${element[2]}`);
         });
 
         marker.addListener('mouseout', () => {
-            drawTitle(selectedAvion.color, selectedAvion.nombre, latLng);
+            drawTitle(selectedAvion.color, selectedAvion.nombre);
         });
     });
 }
@@ -171,7 +169,7 @@ randomColor = () => {
     return color;
 }
 
-drawTitle = (color, nombre, coordenadas) => {
+drawTitle = (color, nombre) => {
     let divCuadrado = document.getElementById('divCuadrado');
     let txtTitulo = document.getElementById('txtTitulo');
 
@@ -181,10 +179,32 @@ drawTitle = (color, nombre, coordenadas) => {
     if (nombre != '') {
         divCuadrado.style.cursor = 'pointer';
         divCuadrado.addEventListener('click', () => {
-            map.panTo(coordenadas); //Make map global
+            map.panTo(selectedAvion.coordenadas); //Make map global
             map.setZoom(8);
         });
     }
+}
+
+drawDetalles = (avion, index, color, latLng) => {
+    let hoy = Date.now() - avion[3];
+    console.log("Fecha", hoy)
+    map.panTo(latLng); //Make map global
+    map.setZoom(8);
+    selectedAvion.color = color;
+    selectedAvion.nombre = `${index + 1} ${avion[2]}`;
+    selectedAvion.coordenadas = latLng;
+
+    document.getElementById('txtIcao').innerHTML = `D. ICAO24: ${avion[0]}`;
+    document.getElementById('txtPais').innerHTML = `País: ${avion[2]}`;
+    avion[3] != null ? document.getElementById('txtLastContact').innerHTML = `Último contacto: ${Date.now() - avion[3]}s` : document.getElementById('txtLastContact').innerHTML = 'Último contacto: >15s';
+    document.getElementById('txtLongitud').innerHTML = `Longitud: ${avion[5]}`;
+    document.getElementById('txtLatitud').innerHTML = `Latitud: ${avion[6]}`;
+    avion[7] != null ? document.getElementById('txtAltitud').innerHTML = `Altitud bar: ${avion[7]}m` : document.getElementById('txtAltitud').innerHTML = 'Altitud bar: No disp';
+    avion[9] != null ? document.getElementById('txtVelocidad').innerHTML = `Velocidad: ${avion[9]}m/s` : document.getElementById('txtVelocidad').innerHTML = 'Velocidad: No disp';
+    avion[10] != null ? document.getElementById('txtCurso').innerHTML = `Curso: ${avion[10]}°` : document.getElementById('txtCurso').innerHTML = 'Curso: No disp';
+    avion[11] != null ? document.getElementById('txtTasaAscenso').innerHTML = `Tasa Ascenso: ${avion[11]}m/s` : document.getElementById('txtTasaAscenso').innerHTML = 'Tasa Ascenso: No disp';
+    avion[14] != null ? document.getElementById('txtCode').innerHTML = `Cod Squawk: ${avion[14]}` : document.getElementById('txtCode').innerHTML = 'Cod Squawk: No disp';
+
 }
 
 centerControl = (controlDiv, map) => {
