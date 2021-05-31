@@ -22,14 +22,14 @@
     <hr>
     <h2>REGISTRARSE</h2>
     <div class="col-12">
-      <form>
+      <form id="registerForm">
         <div class="row inputsDiv">
           <div class="row">
             <div class="col-12 col-md-4 col-lg-2">
               <p><i class="fas fa-file-alt"></i> Nombre</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="text" placeholder="Nombre" required />
+              <input id="txtNombre" type="text" placeholder="Nombre" required autofocus />
             </div>
           </div>
           <div class="row">
@@ -37,7 +37,7 @@
               <p><i class="fas fa-calendar-minus"></i> Edad</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="number" placeholder="Edad" required />
+              <input id="txtEdad" type="number" placeholder="Edad" required />
             </div>
           </div>
           <div class="row">
@@ -45,7 +45,7 @@
               <p><i class="fas fa-database"></i> CURP</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="text" placeholder="CURP" required />
+              <input id="txtCurp" type="text" placeholder="CURP" required />
             </div>
           </div>
           <div class="row">
@@ -53,7 +53,7 @@
               <p><i class="fas fa-phone-alt"></i> Teléfono</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="number" placeholder="Teléfono" required />
+              <input id="txtTelefono" type="number" placeholder="Teléfono" required />
             </div>
           </div>
           <div class="row">
@@ -61,7 +61,7 @@
               <p><i class="fas fa-envelope"></i> Email</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="email" placeholder="Email" required />
+              <input id="txtEmail" type="email" placeholder="Email" required />
             </div>
           </div>
           <div class="row">
@@ -69,12 +69,12 @@
               <p><i class="fas fa-unlock"></i> Password</p>
             </div>
             <div class="col-12 col-md-8 col-lg-10">
-              <input type="password" placeholder="Password" required />
+              <input id="txtPassword" type="password" placeholder="Password" required />
             </div>
           </div>
         </div>
         <div class="col-12">
-          <button onclick="registrarse()">REGISTRARSE</button>
+          <button>REGISTRARSE</button>
         </div>
       </form>
     </div>
@@ -84,6 +84,12 @@
     </div>
   </div>
 
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
+
+  <script src="../js/firestore.js"></script>
   <script src="../js/registerMethods.js"></script>
 
   <!-- Option 1: Bootstrap Bundle with Popper -->

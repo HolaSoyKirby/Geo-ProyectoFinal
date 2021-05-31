@@ -34,9 +34,11 @@ body {
     width: 30px;
     margin: auto;
     margin-right: 0px;
+    border-radius: 5px;
 }
 
 .titulo {
+    color: black;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     font-size: 24px;
@@ -45,4 +47,11 @@ body {
 
 #divDetalles {
     margin-top: 20px;
+    transition: 0.5s;
+}
+
+#txtFecha {
+    text-align: center;
+    transition: 1s;
+    opacity: 0;
 }

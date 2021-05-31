@@ -28,7 +28,23 @@ let selectedAvion = {
     coordenadas: null
 };
 
+let fecha = null;
+
 iniciaMapa = async () => {
+    console.log(fecha);
+    const uri =
+        "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.76";
+
+
+    fecha = Math.round(new Date().getTime() / 1000);
+
+    const res = await fetch(uri);
+    const data = await res.json();
+
+    aviones = filtrarAviones(data.states);
+    console.log(aviones);
+    hideLoading();
+    showDate();
 
     map = new google.maps.Map(document.getElementById('map'), propiedades);
     map.setOptions({
@@ -40,18 +56,26 @@ iniciaMapa = async () => {
 
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
-    const uri =
-        "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.76";
-    const res = await fetch(uri);
-    const data = await res.json();
-
-    aviones = filtrarAviones(data.states);
-    console.log(aviones);
-    hideLoading();
     addMarkers();
 }
 
-function filtrarAviones(avionesFetch) {
+showDate = async () => {
+    let date = new Date();
+
+    let dformat = `${
+        (date.getMonth() + 1).toString().padStart(2, '0')}/${
+        date.getDate().toString().padStart(2, '0')}/${
+        date.getFullYear().toString().padStart(4, '0')} ${
+        date.getHours().toString().padStart(2, '0')}:${
+        date.getMinutes().toString().padStart(2, '0')}:${
+        date.getSeconds().toString().padStart(2, '0')}`;
+    await delay(1000);
+    document.getElementById('txtFecha').innerHTML = `Actualizado: ${dformat}`;
+    document.getElementById('txtFecha').style.opacity = 1;
+    document.getElementById('divFecha').appendChild(document.createElement('hr'));
+}
+
+filtrarAviones = (avionesFetch) => {
     let aviones = [];
     for (let element of avionesFetch) {
 
@@ -185,18 +209,20 @@ drawTitle = (color, nombre) => {
     }
 }
 
-drawDetalles = (avion, index, color, latLng) => {
-    let hoy = Date.now() - avion[3];
-    console.log("Fecha", hoy)
+drawDetalles = async (avion, index, color, latLng) => {
     map.panTo(latLng); //Make map global
     map.setZoom(8);
     selectedAvion.color = color;
     selectedAvion.nombre = `${index + 1} ${avion[2]}`;
     selectedAvion.coordenadas = latLng;
 
-    document.getElementById('txtIcao').innerHTML = `D. ICAO24: ${avion[0]}`;
+    document.getElementById('divDetalles').style.opacity = 0;
+    await delay(500);
+    document.getElementById('divDetalles').style.opacity = 1;
+
+    document.getElementById('txtIcao').innerHTML = `D. ICAO24: ${avion[0].toUpperCase()}`;
     document.getElementById('txtPais').innerHTML = `País: ${avion[2]}`;
-    avion[3] != null ? document.getElementById('txtLastContact').innerHTML = `Último contacto: ${Date.now() - avion[3]}s` : document.getElementById('txtLastContact').innerHTML = 'Último contacto: >15s';
+    avion[3] != null ? document.getElementById('txtLastContact').innerHTML = `Último contacto: ${fecha - avion[3]}s` : document.getElementById('txtLastContact').innerHTML = 'Último contacto: No disp';
     document.getElementById('txtLongitud').innerHTML = `Longitud: ${avion[5]}`;
     document.getElementById('txtLatitud').innerHTML = `Latitud: ${avion[6]}`;
     avion[7] != null ? document.getElementById('txtAltitud').innerHTML = `Altitud bar: ${avion[7]}m` : document.getElementById('txtAltitud').innerHTML = 'Altitud bar: No disp';
@@ -204,10 +230,9 @@ drawDetalles = (avion, index, color, latLng) => {
     avion[10] != null ? document.getElementById('txtCurso').innerHTML = `Curso: ${avion[10]}°` : document.getElementById('txtCurso').innerHTML = 'Curso: No disp';
     avion[11] != null ? document.getElementById('txtTasaAscenso').innerHTML = `Tasa Ascenso: ${avion[11]}m/s` : document.getElementById('txtTasaAscenso').innerHTML = 'Tasa Ascenso: No disp';
     avion[14] != null ? document.getElementById('txtCode').innerHTML = `Cod Squawk: ${avion[14]}` : document.getElementById('txtCode').innerHTML = 'Cod Squawk: No disp';
-
 }
 
-centerControl = (controlDiv, map) => {
+centerControl = (controlDiv) => {
     // Set CSS for the control border.
     const controlUI = document.createElement("div");
     controlUI.style.backgroundColor = "#fff";
@@ -239,8 +264,6 @@ centerControl = (controlDiv, map) => {
     });
 }
 
-const delay = (ms) => new Promise(res => setTimeout(res, ms));
-
 hideLoading = async () => {
     const loading = document.getElementById('loading');
     loading.style.opacity = 0;
@@ -248,3 +271,5 @@ hideLoading = async () => {
     loading.remove();
     document.getElementById('map').style.opacity = 1;
 }
+
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
