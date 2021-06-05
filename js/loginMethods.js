@@ -4,13 +4,13 @@ let isBusy = false;
 
 
 loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
     if (isBusy == false) {
         console.log(isBusy);
         isBusy = true;
         let txtError = document.getElementById('txtError');
         txtError.style.visibility = 'hidden';
 
-        e.preventDefault();
         console.log('Iniciando Sesión');
 
         const email = loginForm['txtEmail'].value;

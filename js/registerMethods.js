@@ -2,13 +2,13 @@ const registerForm = document.getElementById('registerForm');
 let isBusy = false;
 
 registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     if (isBusy == false) {
         console.log(isBusy);
         isBusy = true;
         let txtError = document.getElementById('txtError');
         txtError.style.visibility = 'hidden';
 
-        e.preventDefault();
         console.log('registrando');
         const nombre = registerForm['txtNombre'].value;
         const edad = registerForm['txtEdad'].value;
