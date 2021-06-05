@@ -1,7 +1,7 @@
 const registerForm = document.getElementById('registerForm');
 let isBusy = false;
 
-registerForm.addEventListener('submit', (e) => {
+registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (isBusy == false) {
         console.log(isBusy);
@@ -47,51 +47,6 @@ registerForm.addEventListener('submit', (e) => {
     }
 });
 
-
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let txtError = document.getElementById('txtError');
-    txtError.style.visibility = 'hidden';
-
-    console.log('registrando');
-    const nombre = registerForm['txtNombre'].value;
-    const edad = registerForm['txtEdad'].value;
-    const curp = registerForm['txtCurp'].value;
-    const telefono = registerForm['txtTelefono'].value;
-    const email = registerForm['txtEmail'].value;
-    const password = registerForm['txtPassword'].value;
-
-    console.log(`${nombre} ${edad} ${curp} ${telefono} ${email} ${password}`);
-
-    auth.createUserWithEmailAndPassword(email, password).then(cred => {
-            console.log(cred.user.uid);
-            return db.collection('usuarios').doc(cred.user.uid).set({
-                nombre: nombre,
-                edad: edad,
-                curp: curp,
-                telefono: telefono
-            });
-
-
-        }).then(() => {
-            let usuario = {
-                nombre: nombre,
-                edad: edad,
-                curp: curp,
-                telefono: telefono,
-                email: email
-            };
-
-            sessionStorage.setItem('usuario', JSON.stringify(usuario));
-            window.location = '../pages/mapa.html';
-        })
-        .catch(error => {
-            console.log(error);
-            txtError.innerHTML = errorMessage(error.code);
-            txtError.style.visibility = 'visible';
-        });
-});
-
 errorMessage = (error) => {
     switch (error) {
         case 'auth/invalid-email':
@@ -105,6 +60,6 @@ errorMessage = (error) => {
     }
 }
 
-function irALogin() {
+irALogin = () => {
     window.location = '../pages/login.html';
 }
