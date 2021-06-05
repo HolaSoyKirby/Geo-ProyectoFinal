@@ -1,7 +1,10 @@
 body,
 html {
-    height: 100%;
+    margin: 0;
+    padding: 0;
     background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 13%, rgba(0, 212, 255, 1) 100%);
+    height: 100%;
+    background-attachment: fixed;
 }
 
 .bg-text {
@@ -68,7 +71,8 @@ button {
     transition: 0.5s;
 }
 
-button:hover {
+button:hover,
+button:focus {
     background-color: rgb(9, 9, 121);
     border-color: rgb(0, 0, 168);
     color: white;
@@ -88,4 +92,10 @@ button:hover {
 
 .bottomTextDiv {
     margin-bottom: 10px;
+}
+
+#txtError {
+    color: red;
+    text-align: center;
+    visibility: hidden;
 }

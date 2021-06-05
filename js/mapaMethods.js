@@ -30,8 +30,55 @@ let selectedAvion = {
 
 let fecha = null;
 
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = async function () {
+    modal.style.display = "block";
+    await delay(1);
+    modal.style.opacity = 1;
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = async function () {
+    modal.style.opacity = 0;
+    await delay(500);
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = async function (event) {
+    if (event.target == modal) {
+        modal.style.opacity = 0;
+        await delay(500);
+        modal.style.display = "none";
+    }
+}
+
+llenarUsuario = () => {
+    let usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    console.log(JSON.stringify(usuario));
+
+    document.getElementById('txtUserName').innerHTML = `Nombre: ${usuario.nombre}`;
+    document.getElementById('txtUserEdad').innerHTML = `Edad: ${usuario.edad}`;
+    document.getElementById('txtUserCurp').innerHTML = `CURP: ${usuario.curp}`;
+    document.getElementById('txtUserTel').innerHTML = `Teléfono: ${usuario.telefono}`;
+    document.getElementById('txtUserEmail').innerHTML = `Email: ${usuario.email}`;
+}
+
+salir = () => {
+    sessionStorage.clear();
+    window.location = '../pages/login.html';
+}
+
 iniciaMapa = async () => {
-    console.log(fecha);
     const uri =
         "https://opensky-network.org/api/states/all?lamin=12.754424&lomin=-127.415227&lamax=32.720980&lomax=-86.76";
 
@@ -248,13 +295,14 @@ centerControl = (controlDiv) => {
 
     // Set CSS for the control interior.
     const controlText = document.createElement("div");
-    controlText.style.color = "rgb(25,25,25)";
-    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+    controlText.style.color = "rgb(102, 102, 102)";
+    controlText.style.fontWeight = 'bold';
+    controlText.style.fontFamily = "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif";
     controlText.style.fontSize = "16px";
     controlText.style.lineHeight = "38px";
     controlText.style.paddingLeft = "5px";
     controlText.style.paddingRight = "5px";
-    controlText.innerHTML = "Centrar Mapa";
+    controlText.innerHTML = "CENTRAR MAPA";
     controlUI.appendChild(controlText);
 
     // Setup the click event listeners: simply set the map to Chicago.

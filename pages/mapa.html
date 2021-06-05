@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="../css/mapa.css" />
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body onload="llenarUsuario()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="opacity: 0.7;">
         <div class="container-fluid">
             <a class="navbar-brand">TORRE DE CONTROL</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -27,10 +27,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mi Cuenta</a>
+                        <a class="nav-link" id="myBtn" data-toggle="modal" data-target="#exampleModal" style="color: white;">Mi Cuenta</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Salir</a>
+                        <a class="nav-link" onclick="salir()" style="color: white;">Salir</a>
                     </li>
                 </ul>
             </div>
@@ -41,18 +41,18 @@
         <img id="loading-image" src="../img/loading.gif" alt="Loading..." />
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 5px;">
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="col-12">
                     <div id="map"></div>
                 </div>
-                <div class="row" style="margin-top: 10px;">
+                <div class="row" style="margin-top: 10px; height: 50px;">
                     <div class="col-4">
                         <div id="divCuadrado" class="color"></div>
                     </div>
                     <div class="col-8">
-                        <p id="txtTitulo" class="titulo">1 México</p>
+                        <p id="txtTitulo" class="titulo"></p>
                     </div>
                 </div>
             </div>
@@ -97,6 +97,20 @@
             </div>
         </div>
     </div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+        <p id="txtUserName" class="titulo">Nombre: Si</p>
+        <p id="txtUserEdad" class="titulo">Edad: 20</p>
+        <p id="txtUserCurp" class="titulo">CURP: ASDFG1232131233</p>
+        <p id="txtUserTel" class="titulo">Teléfono: 4771234567</p>
+        <p id="txtUserEmail" class="titulo">Email: mkz@gmail.com</p>
+  </div>
+</div>
 
     <script src="../js/mapaMethods.js"></script>
 
