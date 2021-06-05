@@ -1,56 +1,50 @@
 const registerForm = document.getElementById('registerForm');
+let isBusy = false;
 
 registerForm.addEventListener('submit', (e) => {
-    let txtError = document.getElementById('txtError');
-    txtError.style.visibility = 'hidden';
+    if (isBusy == false) {
+        console.log(isBusy);
+        isBusy = true;
+        let txtError = document.getElementById('txtError');
+        txtError.style.visibility = 'hidden';
 
-    e.preventDefault();
-    console.log('registrando');
-    const nombre = registerForm['txtNombre'].value;
-    const edad = registerForm['txtEdad'].value;
-    const curp = registerForm['txtCurp'].value;
-    const telefono = registerForm['txtTelefono'].value;
-    const email = registerForm['txtEmail'].value;
-    const password = registerForm['txtPassword'].value;
+        e.preventDefault();
+        console.log('registrando');
+        const nombre = registerForm['txtNombre'].value;
+        const edad = registerForm['txtEdad'].value;
+        const curp = registerForm['txtCurp'].value;
+        const telefono = registerForm['txtTelefono'].value;
+        const email = registerForm['txtEmail'].value;
+        const password = registerForm['txtPassword'].value;
 
-    console.log(`${nombre} ${edad} ${curp} ${telefono} ${email} ${password}`);
+        console.log(`${nombre} ${edad} ${curp} ${telefono} ${email} ${password}`);
 
-    auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user.uid);
-        return db.collection('usuarios').doc(cred.user.uid).set({
-            nombre: nombre,
-            edad: edad,
-            curp: curp,
-            telefono: telefono
-        });
+        try {
+            const cred = await auth.createUserWithEmailAndPassword(email, password);
+            await db.collection('usuarios').doc(cred.user.uid).set({
+                nombre: nombre,
+                edad: edad,
+                curp: curp,
+                telefono: telefono
+            });
 
+            let usuario = {
+                nombre: nombre,
+                edad: edad,
+                curp: curp,
+                telefono: telefono,
+                email: email
+            };
 
-    }).then(() => {
-        let usuario = {
-            nombre: nombre,
-            edad: edad,
-            curp: curp,
-            telefono: telefono,
-            email: email
-        };
-
-        sessionStorage.setItem('usuario', JSON.stringify(usuario));
-        window.location = '../pages/mapa.html';
-    })
-    .catch(error => {
-        console.log(error);
-        txtError.innerHTML = errorMessage(error.code);
-        txtError.style.visibility = 'visible';
-    });
-
-    /*
-    await db.collection('usuarios').doc().set({
-        nombre: nombre,
-        edad: edad,
-        curp: curp,
-        telefono: telefono
-    });
-    */
+            sessionStorage.setItem('usuario', JSON.stringify(usuario));
+            window.location = '../pages/mapa.html';
+        } catch (error) {
+            console.log(error);
+            txtError.innerHTML = errorMessage(error.code);
+            txtError.style.visibility = 'visible';
+        }
+        isBusy = false;
+    }
 });
 
 
@@ -70,32 +64,32 @@ registerForm.addEventListener('submit', (e) => {
     console.log(`${nombre} ${edad} ${curp} ${telefono} ${email} ${password}`);
 
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user.uid);
-        return db.collection('usuarios').doc(cred.user.uid).set({
-            nombre: nombre,
-            edad: edad,
-            curp: curp,
-            telefono: telefono
+            console.log(cred.user.uid);
+            return db.collection('usuarios').doc(cred.user.uid).set({
+                nombre: nombre,
+                edad: edad,
+                curp: curp,
+                telefono: telefono
+            });
+
+
+        }).then(() => {
+            let usuario = {
+                nombre: nombre,
+                edad: edad,
+                curp: curp,
+                telefono: telefono,
+                email: email
+            };
+
+            sessionStorage.setItem('usuario', JSON.stringify(usuario));
+            window.location = '../pages/mapa.html';
+        })
+        .catch(error => {
+            console.log(error);
+            txtError.innerHTML = errorMessage(error.code);
+            txtError.style.visibility = 'visible';
         });
-
-
-    }).then(() => {
-        let usuario = {
-            nombre: nombre,
-            edad: edad,
-            curp: curp,
-            telefono: telefono,
-            email: email
-        };
-
-        sessionStorage.setItem('usuario', JSON.stringify(usuario));
-        window.location = '../pages/mapa.html';
-    })
-    .catch(error => {
-        console.log(error);
-        txtError.innerHTML = errorMessage(error.code);
-        txtError.style.visibility = 'visible';
-    });
 });
 
 errorMessage = (error) => {
